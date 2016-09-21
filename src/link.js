@@ -8,6 +8,8 @@ let {
     exec
 } = require('mz/child_process');
 
+let log = console && console.log || (() => {});// eslint-disable-line
+
 /**
  * 1. link all dependencies. `npm link`
  * 2. add dependencies to link_dependencies in package.json
@@ -32,6 +34,7 @@ let linkProject = (project, depMap) => {
 
 let npmLink = (projectRoot, depPath) => {
     let linkCmd = `npm link ${depPath}`;
+    log(`[npm link] in ${projectRoot}, cmd is ${linkCmd}`);
     return exec(linkCmd, {
         cwd: projectRoot,
         stdio: 'inherit'

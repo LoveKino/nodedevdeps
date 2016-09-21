@@ -30,10 +30,7 @@ let installModule = (cur, name, dep) => {
     let cmd = `npm install --save ${dep}`;
 
     return removeModule(cur, name).then(() => {
-        log('install local module -------------');
-        log(cur);
-        log(cmd);
-        log();
+        log(`[install local] in ${cur}, cmd is ${cmd}`);
         return exec(cmd, {
             cwd: cur,
             stdio: 'inherit'

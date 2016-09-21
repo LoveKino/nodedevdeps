@@ -2,6 +2,8 @@
 
 let {link, linkProject} = require('./link');
 
+let installLocal = require('./installLocal');
+
 /**
  * only need to declare developing node packages's dependency relationships
  *
@@ -15,5 +17,6 @@ let {link, linkProject} = require('./link');
 
 module.exports = {
     link,
-    linkProject
+    linkProject,
+    installLocal
 };
