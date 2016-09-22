@@ -8,11 +8,18 @@ let {
     exec
 } = require('mz/child_process');
 
-let log = console && console.log || (() => {});// eslint-disable-line
+let {
+    lstat, realpath
+} = require('mz/fs');
+
+let path = require('path');
+
+let log = console && console.log || (() => {}); // eslint-disable-line
 
 /**
  * 1. link all dependencies. `npm link`
  * 2. add dependencies to link_dependencies in package.json
+ *
  */
 let link = (depMap) => {
     let projects = [];
@@ -33,11 +40,31 @@ let linkProject = (project, depMap) => {
 };
 
 let npmLink = (projectRoot, depPath) => {
-    let linkCmd = `npm link ${depPath}`;
-    log(`[npm link] in ${projectRoot}, cmd is ${linkCmd}`);
-    return exec(linkCmd, {
-        cwd: projectRoot,
-        stdio: 'inherit'
+    /**
+     * TODO check cache first
+     */
+    return getPackageJson(depPath).then((moduleJson) => {
+        let nodemodule_depPath = path.join(projectRoot, 'node_modules', moduleJson.name);
+
+        return lstat(nodemodule_depPath).then((stats) => {
+            if (stats.isSymbolicLink()) {
+                return realpath(nodemodule_depPath).then((real) => {
+                    return real === depPath;
+                });
+            }
+
+            return false;
+        }).catch(() => {
+            return false;
+        }).then((cache) => {
+            if (cache) return;
+            let linkCmd = `npm link ${depPath}`;
+            log(`[npm link] in ${projectRoot}, cmd is ${linkCmd}`);
+            return exec(linkCmd, {
+                cwd: projectRoot,
+                stdio: 'inherit'
+            });
+        });
     });
 };
 
