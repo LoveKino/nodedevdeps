@@ -1,0 +1,12 @@
+{
+    "name": "module1",
+    "version": "0.0.1",
+    "description": "module tpl",
+    "main": "index.js",
+    "scripts": {},
+    "author": "",
+    "license": "ISC",
+    "link_dependencies": {
+        "module2": "~0.0.1"
+    }
+}

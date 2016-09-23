@@ -32,7 +32,8 @@ let link = (depMap) => {
 
 let linkProject = (project, depMap) => {
     let projectRoot = project.path;
-    let deps = project.deps.map(dep => depMap[dep].path);
+    let projectDeps = project.deps || [];
+    let deps = projectDeps.map(dep => depMap[dep].path);
     return runSequence(deps.map((depPath) => () => npmLink(projectRoot, depPath)))
         .then(() => {
             return updatePackageDep(projectRoot, deps);

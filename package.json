@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/LoveKino/nodedevdeps#readme",
   "devDependencies": {
+    "filetreemap": "0.0.1",
     "mocha": "^3.0.2"
   },
   "dependencies": {
