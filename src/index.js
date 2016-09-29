@@ -1,6 +1,12 @@
 'use strict';
 
-let {link, linkProject} = require('./link');
+let {
+    link, linkProject
+} = require('./link');
+
+let {
+    cleanLink, cleanProjectLink
+} = require('./unlink');
 
 let installLocal = require('./installLocal');
 
@@ -18,5 +24,7 @@ let installLocal = require('./installLocal');
 module.exports = {
     link,
     linkProject,
+    cleanLink,
+    cleanProjectLink,
     installLocal
 };
