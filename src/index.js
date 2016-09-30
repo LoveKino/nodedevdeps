@@ -10,6 +10,8 @@ let {
 
 let installLocal = require('./installLocal');
 
+let install = require('./install');
+
 /**
  * only need to declare developing node packages's dependency relationships
  *
@@ -26,5 +28,6 @@ module.exports = {
     linkProject,
     cleanLink,
     cleanProjectLink,
-    installLocal
+    installLocal,
+    install
 };
