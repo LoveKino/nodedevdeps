@@ -36,7 +36,9 @@ let cleanProjectLink = (project) => {
             let nodemodule_depPath = path.join(projectRoot, 'node_modules', name);
             log(`delete module ${nodemodule_depPath}`);
             return nodemodule_depPath;
-        }));
+        }), {
+            force: true
+        });
     });
 
 };

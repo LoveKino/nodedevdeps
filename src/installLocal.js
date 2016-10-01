@@ -16,6 +16,7 @@ let installDepLocal = (name, depMap, {
         throw new Error(`missing project ${name}`);
     }
 
+    project.deps = project.deps || [];
     // remove deps first
     return Promise.all(project.deps.map((depName) => removeModule(project.path, depName))).then(() => {
         return runSequence(

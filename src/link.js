@@ -5,14 +5,12 @@ let {
 } = require('./util');
 
 let {
-    exec
-} = require('mz/child_process');
-
-let {
     lstat, realpath
 } = require('mz/fs');
 
 let path = require('path');
+
+let spawnp = require('spawnp');
 
 let log = console && console.log || (() => {}); // eslint-disable-line
 
@@ -33,7 +31,13 @@ let link = (depMap) => {
 let linkProject = (project, depMap) => {
     let projectRoot = project.path;
     let projectDeps = project.deps || [];
-    let deps = projectDeps.map(dep => depMap[dep].path);
+    let deps = projectDeps.map(dep => {
+        let depProject = depMap[dep];
+        if (!depProject) {
+            throw new Error(`missing project ${dep} in depMap ${JSON.stringify(depMap, null, 4)}`);
+        }
+        return depProject.path;
+    });
     return runSequence(deps.map((depPath) => () => npmLink(projectRoot, depPath)))
         .then(() => {
             return updatePackageDep(projectRoot, deps);
@@ -59,11 +63,12 @@ let npmLink = (projectRoot, depPath) => {
             return false;
         }).then((cache) => {
             if (cache) return;
-            let linkCmd = `npm link ${depPath}`;
-            log(`[npm link] in ${projectRoot}, cmd is ${linkCmd}`);
-            return exec(linkCmd, {
+            return spawnp('npm link', [depPath], {
                 cwd: projectRoot,
                 stdio: 'inherit'
+            }).catch(err => {
+                log(`cmd is: npm link ${depPath}, in ${projectRoot}`);
+                throw err;
             });
         });
     });

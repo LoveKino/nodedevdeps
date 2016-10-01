@@ -10,9 +10,7 @@ let promisify = require('promisify-node');
 
 let ncp = require('ncp');
 
-let {
-    exec
-} = require('mz/child_process');
+let spawnp = require('spawnp');
 
 ncp = promisify(ncp);
 
@@ -31,7 +29,7 @@ let installModule = (cur, name, dep) => {
 
     return removeModule(cur, name).then(() => {
         log(`[install local] in ${cur}, cmd is ${cmd}`);
-        return exec(cmd, {
+        return spawnp(cmd, [], {
             cwd: cur,
             stdio: 'inherit'
         });
