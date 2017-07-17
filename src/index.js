@@ -21,6 +21,10 @@ let install = require('./install');
  *          deps:[{name}]
  *      }
  * }
+ *
+ * TODO update all node modules for a dependency
+ *
+ * TODO convert link type project to normal node module
  */
 
 module.exports = {
